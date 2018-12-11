@@ -25,7 +25,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 public class BackgroundLogging extends Service {
 
-    BroadcastReceiver screenReceiver, appReceiver;
+    BroadcastReceiver screenReceiver;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
@@ -91,7 +91,7 @@ public class BackgroundLogging extends Service {
 
             Notification notification = new NotificationCompat.Builder(this)
                     .setContentTitle("Recording data")
-                    .setContentText("PsychApp is logging data")
+                    .setContentText("app is logging data")
                     .setContentIntent(pendingIntent).build();
 
             startForeground(101, notification);
@@ -141,32 +141,8 @@ public class BackgroundLogging extends Service {
         screenReceiverFilter.addAction(Intent.ACTION_SCREEN_ON);
         screenReceiverFilter.addAction(Intent.ACTION_USER_PRESENT);
 
-
         registerReceiver(screenReceiver, screenReceiverFilter);
 
-        appReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if(intent.getAction() != null){
-                    switch (intent.getAction()){
-                        case Intent.ACTION_PACKAGE_ADDED:
-                            //identify what app has been added
-                            storeData("App added");
-                            break;
-                        case Intent.ACTION_PACKAGE_REMOVED:
-                            //identify what app has been removed
-                            storeData("App removed");
-                    }
-                }
-            }
-        };
-
-        IntentFilter appReceiverFilter = new IntentFilter();
-        appReceiverFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        appReceiverFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        appReceiverFilter.addDataScheme("package");
-
-        registerReceiver(appReceiver, appReceiverFilter);
     }
 
     private void storeData(String event) {
@@ -207,6 +183,5 @@ public class BackgroundLogging extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(screenReceiver);
-        unregisterReceiver(appReceiver);
     }
 }

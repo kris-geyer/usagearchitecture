@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">usage architecture</string>
     <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="too_old">Status: The version of android that your phone runs on is too old to record the type of data that this app collects. Please get in contact with the researcher and inform them of this.</string>
 </resources>

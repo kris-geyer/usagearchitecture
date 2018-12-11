@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="architecture.geyerk.sensorlab.usagearchitecture">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
 
     <application
         android:allowBackup="true"
@@ -8,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,6 +23,25 @@
         </activity>
 
         <service android:name=".BackgroundLogging"/>
+        <service android:name=".foregroundLogging"/>
+        <service android:name=".notificationLogging"
+            android:label="Notification Listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+        <intent-filter>
+            <action android:name="android.service.notification.NotificationListenerService" />
+        </intent-filter>
+        </service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="architecture.geyerk.sensorlab.usagearchitecture.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+
+        </provider>
     </application>
 
 </manifest>
